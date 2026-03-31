@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>レシピ提案アプリ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        input {
+            width: 45%;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>レシピ提案アプリ</h1>
+
+    <input type="text" id="ingredient1" placeholder="食材1">
+    <input type="text" id="ingredient2" placeholder="食材2">
+
+    <button onclick="getRecipe()">レシピ取得</button>
+
+    <h2>結果</h2>
+    <pre id="result"></pre>
+
+    <script>
+        async function getRecipe() {
+            const i1 = document.getElementById("ingredient1").value;
+            const i2 = document.getElementById("ingredient2").value;
+
+            const response = await fetch(
+                `/api/recipes?ingredient1=${i1}&ingredient2=${i2}`
+            );
+
+            const data = await response.json();
+
+            document.getElementById("result").innerHTML =
+                `<div><b>料理名:</b> ${data.recipeName}</div>
+                <div><b>材料:</b> ${data.ingredients.join(", ")}</div>
+                <div><b>手順:</b> ${data.steps}</div>`;
+        }
+    </script>
+
+</body>
+</html>
