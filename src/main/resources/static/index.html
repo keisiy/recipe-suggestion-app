@@ -80,12 +80,19 @@
             const i2 = document.getElementById("ingredient2").value;
 
             const response = await fetch(
-                `/api/recipes?ingredient1=${i1}&ingredient2=${i2}`
+                `/api/recipes?ingredient1=${encodeURIComponent(i1)}&ingredient2=${encodeURIComponent(i2)}`
             );
 
             const data = await response.json();
 
-            document.getElementById("result").innerHTML =
+            const result = document.getElementById("result");
+
+            if (!data.success) {
+                result.innerHTML = `<div><b>エラー:</b> ${data.message}</div>`;
+                return;
+            }
+
+            result.innerHTML =
                 `<div><b>料理名:</b> ${data.recipeName}</div>
                 <div><b>材料:</b> ${data.ingredients.join(", ")}</div>
                 <div><b>手順:</b> ${data.steps}</div>`;
