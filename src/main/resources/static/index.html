@@ -60,24 +60,42 @@
             font-weight: bold;
             color: #555;
         }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            min-height: 20px;
+        }
     </style>
 </head>
 <body>
 
     <h1>レシピ提案アプリ</h1>
 
-    <input type="text" id="ingredient1" placeholder="食材1">
-    <input type="text" id="ingredient2" placeholder="食材2">
+    <div class="container">
+        <input type="text" id="ingredient1" placeholder="食材1">
+        <input type="text" id="ingredient2" placeholder="食材2">
 
-    <button onclick="getRecipe()">レシピ取得</button>
+        <div id="error-message" class="error-message"></div>
 
-    <h2>結果</h2>
-    <pre id="result"></pre>
+        <button onclick="getRecipe()">レシピ取得</button>
+
+        <div class="result" id="result">
+            ここに結果が表示されます
+        </div>
+    </div>
 
     <script>
         async function getRecipe() {
             const i1 = document.getElementById("ingredient1").value;
             const i2 = document.getElementById("ingredient2").value;
+
+            const errorMessage = document.getElementById("error-message");
+            const result = document.getElementById("result");
+
+            errorMessage.textContent = "";
 
             const response = await fetch(
                 `/api/recipes?ingredient1=${encodeURIComponent(i1)}&ingredient2=${encodeURIComponent(i2)}`
@@ -85,10 +103,9 @@
 
             const data = await response.json();
 
-            const result = document.getElementById("result");
-
             if (!data.success) {
-                result.innerHTML = `<div><b>エラー:</b> ${data.message}</div>`;
+                errorMessage.textContent = data.message;
+                result.innerHTML = "ここに結果が表示されます";
                 return;
             }
 
