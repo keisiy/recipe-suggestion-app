@@ -76,8 +76,8 @@
     <h1>レシピ提案アプリ</h1>
 
     <div class="container">
-        <input type="text" id="ingredient1" placeholder="食材1">
-        <input type="text" id="ingredient2" placeholder="食材2">
+        <input type="text" id="ingredient1" placeholder="食材1" onkeydown="handleEnter(event)">
+        <input type="text" id="ingredient2" placeholder="食材2" onkeydown="handleEnter(event)">
 
         <div id="error-message" class="error-message"></div>
 
@@ -89,6 +89,12 @@
     </div>
 
     <script>
+        function handleEnter(event) {
+            if (event.key === "Enter") {
+                getRecipe();
+            }
+        }
+
         async function getRecipe() {
             const i1 = document.getElementById("ingredient1").value;
             const i2 = document.getElementById("ingredient2").value;
